@@ -1,0 +1,5 @@
+# Memories![SignIn_Page](https://user-images.githubusercontent.com/106379439/223150071-ba57ce34-0aa0-44f5-964a-8df3985cb417.png)
+![SignUp_Page](https://user-images.githubusercontent.com/106379439/223150076-fa56270f-ff09-4e97-a016-1b459935eda5.png)
+![Home_Page](https://user-images.githubusercontent.com/106379439/223150091-ecdb4e24-6efc-4900-8bc3-b6b7c1e2dffa.png)
+![Post_Details_Page](https://user-images.githubusercontent.com/106379439/223150101-b1bf6a22-fcfa-410b-aa15-7d12f1165c1d.png)
+![UserAllPosts_Page](https://user-images.githubusercontent.com/106379439/223150108-a3b3be1b-e26b-4489-8a89-386ffe511344.png)
