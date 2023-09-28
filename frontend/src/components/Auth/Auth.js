@@ -8,8 +8,7 @@ import {
   Typography,
   Container,
 } from "@material-ui/core";
-import { Link, useHistory } from "react-router-dom";
-import { useGoogleLogin } from "@react-oauth/google";
+import { useHistory } from "react-router-dom";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Alert from "@mui/material/Alert";
 import { signin, signup } from "../../actions/auth";
@@ -17,6 +16,8 @@ import { AUTH } from "../../constants/actionTypes";
 import useStyles from "./styles";
 import Input from "./input";
 import ReCAPTCHA from "react-google-recaptcha";
+import { GoogleLogin } from '@react-oauth/google';
+import jwt_decode from "jwt-decode";
 
 const initialState = {
   firstName: "",
@@ -38,11 +39,6 @@ const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const handleShowPassword = () => setShowPassword(!showPassword);
 
-  const login = useGoogleLogin({
-    onSuccess: (codeResponse) => console.log(codeResponse),
-    flow: "auth-code",
-  });
-
   const switchMode = () => {
     setForm(initialState);
     setIsSignup((prevIsSignup) => !prevIsSignup);
@@ -62,20 +58,29 @@ const SignUp = () => {
   };
 
   const googleSuccess = async (res) => {
-    const result = res?.profileObj;
-    const token = res?.tokenId;
+
+    let token = await res?.credential;
+    let decoded = jwt_decode(token);
+
+    const result = {
+      _id: decoded.sub,
+      name: decoded.name,
+      email: decoded.email,
+      password: decoded.jti,
+      imageUrl: decoded.picture,
+    };
 
     try {
       dispatch({ type: AUTH, data: { result, token } });
-
       history.push("/");
     } catch (error) {
       console.log(error);
     }
   };
 
-  const googleError = () =>
-    console.log("Google Sign In was unsuccessful. Try again later");
+  const googleError = () => {
+    console.log("Google Sign In was unsuccessful. Try again later")
+  };
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -158,7 +163,7 @@ const SignUp = () => {
           >
             {isSignup ? "Sign Up" : "Sign In"}
           </Button>
-          <Button onClick={(res) => console.log(res)}>Sign in with Google 🚀 </Button>
+          <GoogleLogin onSuccess={googleSuccess} onError={googleError}>Sign in with Google 🚀</GoogleLogin>
 
           <Grid container justifyContent="flex-end">
             <Grid item>

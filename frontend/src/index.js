@@ -7,6 +7,7 @@ import { reducers } from "./reducers";
 import App from "./App";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
+
 const store = configureStore({
   reducer: reducers,
 });
@@ -14,7 +15,7 @@ const store = configureStore({
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
-    <GoogleOAuthProvider clientId="1099275760511-i99rp5sl2ni5lldj0qs100ninfd8pm72.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId="403940769245-a1tnjmujfre5gnd1sb2qraift3pkr0fu.apps.googleusercontent.com">
     <App />
     </GoogleOAuthProvider>
   </Provider>
