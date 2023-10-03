@@ -5,15 +5,45 @@ import cors from "cors"
 import UserRoute from "./routes/user.js"
 import postDetailsRoute from "./routes/postDetails.js"
 import dotenv from 'dotenv'
+import helmet from "helmet";
 dotenv.config()
 
 mongoose.set('strictQuery', false);
 
 const app = express();
 
+
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "http://localhost:3000"],
+        styleSrc: ["'self'"],
+        imgSrc: ["'self'", "http://localhost:3000"], 
+        fontSrc: ["'self'"],
+        objectSrc: ["'none'"],
+        frameAncestors: ["'none'"], // This disallows framing by any origin
+      }
+    },
+    xFrameOptions: { action: "deny" },
+    contentTypesOptions: {
+      nosniff: true,
+    },
+  })
+);
+
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true, // include cookies
+  optionsSuccessStatus: 204, // No Content response for preflight requests
+};
+
+
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
-app.use(cors());
+app.use(cors(corsOptions));
 
 app.use("/user", UserRoute);
 app.use("/posts", postDetailsRoute);
